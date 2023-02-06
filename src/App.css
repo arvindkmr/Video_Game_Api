@@ -32,22 +32,27 @@ margin: 0;
 }
 .deal_section{
   color: black;
+  background-color: #282c3490;
 }
 button{
   cursor: pointer;
+  background-color: white;
+  color:black;
+}
+.searchBtn{
+  padding: .5rem;
+
 }
 .games{
   background-color: #282c34;
   display: grid;
-  grid-template-columns:1fr 1fr 1fr 1fr 1fr;
-  grid-column-gap:2rem;
+  grid-template-columns:1fr 1fr 1fr;
+  grid-column-gap:2rema;
   align-items: center;
   min-width: 100vw;
   height: auto;
 }
 .game{
-  /* min-width: 10vw; */
-  /* min-height: 15vh; */
   margin: 1rem;
   text-align: center;
   background-color: white;
