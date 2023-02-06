@@ -1,29 +1,25 @@
 import './App.css';
-import {useEffect, useState} from 'react'
+import { useState} from 'react'
+import useSWR from 'swr'
+
+const fetcher = (...args)=> fetch(args).then((response)=> response.json())
 function App() {
   const [gameTitle, setGameTitle] = useState("");
   const [maxValue, setMaxValue] = useState(1);
   const [gameList, setGameList] = useState([]);
-  const [gameDeals, setGameDeals] = useState([]);
-
-
-  
   const searchGame =()=>{
     fetch(`https://www.cheapshark.com/api/1.0/games?title=${gameTitle}&limit=${maxValue}`)
     .then((response)=>response.json())
     .then((data)=>{setGameList(data)})
   }
-    useEffect(()=>{
-      fetch(`https://www.cheapshark.com/api/1.0/deals?storeID=1&upperPrice=20&pageSize=3`)
-      .then((response)=>response.json())
-      .then((data)=>{setGameDeals(data)})
-    },[])
-  return (
+    const {data,error}= useSWR('https://www.cheapshark.com/api/1.0/deals?storeID=1&upperPrice=20&pageSize=3', fetcher)
+
+    return (
     <div className="App-header">
     <div className="search_section">
       <h1>Search for a GAME!!</h1>
       <input type="text" className="input" placeholder="PUBG..." onChange={(event)=> setGameTitle(event.target.value)}/>
-      <input type="text" className="input" placeholder="Max array size(default=1)" onChange={(event)=> setMaxValue(event.target.value)}/>
+      <input type="number" className="input" placeholder="Max array size(default=1)" onChange={(event)=> setMaxValue(event.target.value)}/>
       <button className='searchBtn' onClick={searchGame}>Search Game by Title</button>
     </div>
     <div className="games">
@@ -41,7 +37,7 @@ function App() {
               <span role="img" aria-label="fire emoji"> 🔥</span>
           </h2>
           <div className="games">
-                {gameDeals.map((gamedata, key)=>{
+                {data&& data.map((gamedata, key)=>{
                 return <div className="game" key={key}>
                 <h2> {gamedata.title}</h2>
                 <p>Normal Price : {gamedata.normalPrice}</p>
